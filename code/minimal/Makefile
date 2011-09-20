@@ -1,0 +1,10 @@
+SYSTEMCROOT = /home/perms/moy/tlm/systemc-2.2.0
+
+minimal: minimal.cpp
+	g++ minimal.cpp -Wall -Wno-deprecated \
+		-I $(SYSTEMCROOT)/include \
+		-L $(SYSTEMCROOT)/lib-gccsparcOS5/ \
+		-L $(SYSTEMCROOT)/lib-linux/ \
+		-L $(SYSTEMCROOT)/lib-linux64/ \
+		-lsystemc \
+	-o minimal
