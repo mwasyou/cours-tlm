@@ -31,7 +31,7 @@ CXX = g++
 CPPFLAGS  = -I$(SYSTEMC)/include -I$(TLM)/include/tlm
 CPPFLAGS += -I$(ENSITLM) $(SDLCC)
 CPPFLAGS += -MMD -MP -MF $(basename $@).d
-CXXFLAGS = -O3 -g -Wall -Wextra -Winvalid-pch
+CXXFLAGS = -O3 -g -Wall -Wextra -Winvalid-pch -Wno-unused-parameter
 
 CC = gcc
 CFLAGS = -O3 -g -Wall -Wextra

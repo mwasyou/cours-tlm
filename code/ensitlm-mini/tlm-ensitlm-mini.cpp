@@ -48,7 +48,7 @@ struct target : sc_module {
         SC_CTOR(target) {/* */}
 };
 
-int sc_main (int argc, char ** argv) {
+int sc_main (int argc, char **argv) {
         /*
          +---------+    +-------------+    +--------+
          |        +++  +-+           +++  +++       |
