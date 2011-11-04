@@ -1,0 +1,6 @@
+FlashFile: /nfs/ensiens/perms/funchal/ensilinux/a.raw
+FlashMode: ONESHOT
+ProcInst: microblaze_0
+FlashMem: SRAM_256Kx32_c_mem0_baseaddr
+FlashOffset: 0x00000000
+ScratchMem: ilmb_cntlr
