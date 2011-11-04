@@ -6,4 +6,12 @@ export TLM_ENSITLM=~moy/tlm/ensitlm
 export SC_SIGNAL_WRITE_CHECK=DISABLE
 
 # Chaine de cross-compilation MicroBlaze, pour le TP3
-source /home/perms/moy/petalinux-v0.40-final/settings-moy.sh
+# On peut utiliser l'une ou l'autre, au choix.
+petalinux=/home/perms/moy/petalinux-v0.40-final/settings-moy.sh
+xilinx=/home/perms/moy/microblaze_v1.0/setup.sh
+if [ -f "$petalinux" ]; then
+    source "$petalinux"
+fi
+if [ -f "$xilinx" ]; then
+    source "$xilinx"
+fi

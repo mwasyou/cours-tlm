@@ -1,7 +1,11 @@
-TARGET_CC = microblaze-uclinux-gcc
-TARGET_LD = microblaze-uclinux-ld
-TARGET_OBJDUMP = microblaze-uclinux-objdump
-TARGET_READELF = microblaze-uclinux-readelf
+ifndef $(CROSS_COMPILE)
+CROSS_COMPILE=microblaze-unknown-linux-gnu-
+endif
+
+TARGET_CC = $(CROSS_COMPILE)gcc
+TARGET_LD = $(CROSS_COMPILE)ld
+TARGET_OBJDUMP = $(CROSS_COMPILE)objdump
+TARGET_READELF = $(CROSS_COMPILE)readelf
 HOST_CC = gcc
 HOST_LD = ld
 HOST_OBJDUMP = objdump
