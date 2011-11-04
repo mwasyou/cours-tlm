@@ -1,5 +1,5 @@
-ifndef $(CROSS_COMPILE)
-CROSS_COMPILE=microblaze-unknown-linux-gnu-
+ifndef CROSS_COMPILE
+CROSS_COMPILE=microblaze-uclinux-
 endif
 
 TARGET_CC = $(CROSS_COMPILE)gcc
