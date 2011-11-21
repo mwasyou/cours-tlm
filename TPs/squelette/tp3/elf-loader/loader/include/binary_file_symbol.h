@@ -32,6 +32,8 @@
 #include "stdint.h"
 #include <ios>
 
+using std::ptrdiff_t;
+
 namespace soclib { namespace common {
 
 class BinaryFileSymbol

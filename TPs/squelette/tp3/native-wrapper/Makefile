@@ -8,12 +8,12 @@ TARGET = run.x
 
 include ../Makefile.common
 
-LDLIBS += -L../hardware -lhardware -lsystemc
+EXTRALDLIBS += -L../hardware -lhardware -lsystemc
 CXXEXTRAFLAGS = -I../hardware
 CEXTRAFLAGS = -I. 
 
 $(TARGET): $(ESOFT_OBJS) $(OBJS) hardware
-	$(LD) $(ESOFT_OBJS) $(OBJS) -o $@ $(LDFLAGS) $(LDLIBS)
+	$(LD) $(ESOFT_OBJS) $(OBJS) -o $@ $(LDFLAGS) $(EXTRALDLIBS) $(LDLIBS)
 
 .PHONY: hardware
 hardware:

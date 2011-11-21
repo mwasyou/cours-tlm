@@ -36,7 +36,7 @@ CXX = g++
 CPPFLAGS  = -I$(SYSTEMC)/include -I$(TLM)/include/tlm
 CPPFLAGS += -I$(BASIC) $(SDLCC)
 CPPFLAGS += -MMD -MP -MF $(basename $@).d
-CXXFLAGS = -O3 -g -Wall -Wextra -Winvalid-pch -Wno-unused-parameter
+CXXFLAGS = -O3 -g -Wall -Wextra -Winvalid-pch -Wno-unused-parameter -fno-inline-functions
 
 CC = gcc
 CFLAGS = -O3 -g -Wall -Wextra
@@ -44,8 +44,8 @@ CFLAGS = -O3 -g -Wall -Wextra
 LD = $(CXX)
 LDFLAGS = $(CXXFLAGS)
 LDLIBS  = -L/usr/X11R6/lib -lX11
-LDLIBS += $(SDLLIB)
 LDLIBS += -L$(SYSTEMC)/lib-$(ARCH) -lsystemc
+LDLIBS += $(SDLLIB)
 
 RM = -rm -f
 

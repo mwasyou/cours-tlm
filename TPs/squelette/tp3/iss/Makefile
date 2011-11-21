@@ -12,12 +12,12 @@ include ../Makefile.common
 
 # -lsystemc already in LDLIBS, but we need one more to resolve some
 # references to sc_core in libhardware.
-LDLIBS += -L../hardware -lhardware -lsystemc -L../elf-loader -lloader
+EXTRALDLIBS += -L../hardware -lhardware -lsystemc -L../elf-loader -lloader
 CXXEXTRAFLAGS = -I../hardware
 CEXTRAFLAGS = -I. 
 
 $(TARGET): $(OBJS) hardware lib-loader
-	$(LD) $(ESOFT_OBJS) $(OBJS) -o $@ $(LDFLAGS) $(LDLIBS)
+	$(LD) $(ESOFT_OBJS) $(OBJS) -o $@ $(LDFLAGS) $(EXTRALDLIBS) $(LDLIBS)
 
 %.o: ../software/%.c $(filter-out %.d, $(MAKEFILE_LIST))
 	$(CC) -c $< -o $@ $(CPPFLAGS) $(CFLAGS) $(CEXTRAFLAGS)
