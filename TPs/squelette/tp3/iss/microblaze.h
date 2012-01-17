@@ -143,6 +143,8 @@ namespace soclib {
 		 bool		m_ibe;
 
       public:
+	 bool branch_inst;   // indicates whether the last instruction was a branching one
+ 
          /*\
           * The MicroBlaze has a single irq wire, called interrupt
          \*/

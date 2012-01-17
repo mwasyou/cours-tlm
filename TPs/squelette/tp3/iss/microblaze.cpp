@@ -198,6 +198,7 @@ namespace soclib { namespace common {
 
 	MicroBlazeIss::MicroBlazeIss(uint32_t ident)
 		: Iss(mkname(ident), ident) {
+		branch_inst = false;
 		}
 
 	void MicroBlazeIss::reset(void) {
@@ -358,10 +359,21 @@ namespace soclib { namespace common {
 			return;
 		}
 
+		/*
+		 * Check for interruptions
+		 \*/
+		if (!m_imm && !branch_inst && m_irq && !m_delay && (r_msr & MSR_IE)
+				&& !(r_msr & MSR_EIP) && !(r_msr & MSR_BIP)) {
+			r_gpr[14] = r_pc;
+			r_pc = INTERRUPT_VECTOR;
+			r_npc = INTERRUPT_VECTOR + 4;
+			r_msr &= ~MSR_IE;
+		} else {
+
 		/*\
 		 * Reset flags before executing a new instruction
 		 \*/
-
+		branch_inst = false; 
 		m_cancel = false;
 		m_delay  = false;
 		/* Decode the current instruction */
@@ -517,6 +529,7 @@ namespace soclib { namespace common {
 
 				if (!(ins_rd & 0x10) && branch)
 					m_cancel = true;
+				branch_inst = true;
 				break;
 
 			case OP_BRNI:
@@ -567,6 +580,7 @@ namespace soclib { namespace common {
 
 				if (!(ins_rd & 0x10) && branch)
 					m_cancel = true;
+				branch_inst = true;
 				break;
 
 			case OP_BR://br bra brd brad brld brald
@@ -595,6 +609,7 @@ namespace soclib { namespace common {
 					else printf("br%sl%s r%d, r%d\n", a ? "a" : "", d ? "d" : "", ins_rd, ins_rb);
 				}
 #endif
+				branch_inst = true;
 				break;
 
 			case OP_BRI://bri brai brid braid brlid bralid
@@ -623,6 +638,7 @@ namespace soclib { namespace common {
 					else printf("br%sli%s r%d, 0x%x\n", a ? "a" : "", d ? "d" : "", ins_rd, ins_imm);
 				}
 #endif
+				branch_inst = true;
 				break;
 
 			case OP_BS:
@@ -1002,6 +1018,7 @@ namespace soclib { namespace common {
 				// I doubled checked the doc and it looks like it is really a
 				// SEXT16.
 				next_pc = r_gpr[ins_ra] + SEXT16(ins_imm);
+				branch_inst = true;
 				break;
 
 			case OP_SB:
@@ -1148,16 +1165,7 @@ namespace soclib { namespace common {
 		 \*/
 		m_imm = ins_opcode == OP_IMM;
 
-		/*\
-		 * Check for interruptions
-		 \*/
-		if (m_irq && !m_delay && (r_msr & MSR_IE)
-				&& !(r_msr & MSR_EIP) && !(r_msr & MSR_BIP)) {
-			r_gpr[14] = r_pc;
-			r_pc = INTERRUPT_VECTOR;
-			r_npc = INTERRUPT_VECTOR + 4;
-			r_msr &= ~MSR_IE;
-		} else {
+
 			r_pc  = r_npc;
 			r_npc = next_pc;
 		}
