@@ -3,8 +3,7 @@ all: $(TARGET)
 
 SRCS=${wildcard *.cpp}
 
-NO_SDL=yes
-ROOT=../../TPs
+ROOT=../../TPs/
 include $(ROOT)/Makefile.common
 
 $(TARGET): $(OBJS)
