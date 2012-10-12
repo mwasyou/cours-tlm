@@ -1,9 +1,7 @@
 #ifndef BASIC_INITIATOR_SOCKET_H
 #define BASIC_INITIATOR_SOCKET_H
 
-#ifndef ENSITLM_H
-#error include "ensitlm.h"
-#endif
+#include "ensitlm.h"
 
 #include <vector>
 

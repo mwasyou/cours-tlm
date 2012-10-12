@@ -1,9 +1,7 @@
 #ifndef BASIC_TARGET_SOCKET_H
 #define BASIC_TARGET_SOCKET_H
 
-#ifndef ENSITLM_H
-#error include "ensitlm.h"
-#endif
+#include "ensitlm.h"
 
 namespace ensitlm {
 
@@ -25,6 +23,10 @@ namespace ensitlm {
       target_socket() :
             base_type(sc_core::sc_gen_unique_name(kind()))
       {
+         // check_typing() is never actually called, but should be
+         // statically reachable to force the compiler to do the
+         // typechecking.
+         if (false) check_typing();
          init();
       }
 
@@ -56,11 +58,33 @@ namespace ensitlm {
 
       private:
 
+      void check_typing() {
+	 std::cerr << "You should never call this function, it is only meant for typechecking" << std::endl;
+	 abort();
+	 const ensitlm::data_t const_data = 12;
+	 const ensitlm::addr_t const_addr = 42;
+	 ensitlm::data_t data;
+	 // Check that MODULE inherits publicly from
+	 // sc_module. If You get an error on the following
+	 // line, check that the first template argument
+	 // is an sc_module.
+	 (void)static_cast<sc_core::sc_module *>(m_mod);
+	 
+	 // Check that the parent module declares read and
+	 // write methods properly. If you get an error on
+	 // one of the following lines, check that the
+	 // declaration of read and write match *exactly*
+	 // the ones in initiator_socket.h
+	 tlm::tlm_response_status s;
+	 s = m_mod->read(const_addr, data);
+	 s = m_mod->write(const_addr, const_data);
+      }
+      
       void b_transport(tlm::tlm_generic_payload& trans, sc_core::sc_time& t) {
          (void) t;
          addr_t addr = static_cast<addr_t>(trans.get_address());
          data_t& data = *(reinterpret_cast<data_t*>(trans.get_data_ptr()));
-
+	 
          switch(trans.get_command()) {
             case tlm::TLM_READ_COMMAND:
                trans.set_response_status(m_mod->read(addr, data));
@@ -79,9 +103,15 @@ namespace ensitlm {
          // we'll receive transactions ourselves ...
          this->bind(*(static_cast<fw_if_type*>(this)));
 	 // ... but we'll need to call read/write in the parent module.
-         m_mod = dynamic_cast<MODULE*>(this->get_parent_object());
+	 sc_core::sc_object *parent = this->get_parent_object();
+	 if (!parent) {
+            std::cerr << this->name() << ": target socket has no parent object." << std::endl;
+            abort();
+         }
+         m_mod = dynamic_cast<MODULE*>(parent);
          if(!m_mod) {
-            std::cerr << this->name() << ": no parent" << std::endl;
+            std::cerr << this->name() << ": parent object "
+		      << parent->name() << " of socket has the wrong type." << std::endl;
             abort();
          }
       }

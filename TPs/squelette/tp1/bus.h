@@ -1,9 +1,7 @@
 #ifndef BUS_H
 #define BUS_H
 
-#ifndef ENSITLM_H
-#error please include "ensitlm.h"
-#endif
+#include "ensitlm.h"
 
 #include <map>
 
