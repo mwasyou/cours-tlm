@@ -78,6 +78,7 @@ namespace ensitlm {
 	 tlm::tlm_response_status s;
 	 s = m_mod->read(const_addr, data);
 	 s = m_mod->write(const_addr, const_data);
+	 (void)s;
       }
       
       void b_transport(tlm::tlm_generic_payload& trans, sc_core::sc_time& t) {
