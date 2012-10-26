@@ -1,3 +1,4 @@
+# -*- mode: makefile -*-
 .SUFFIXES:
 .SECONDARY:
 SHELL = /bin/sh
@@ -13,7 +14,7 @@ ifndef ENSITLM
 ENSITLM = $(ROOT)/ensitlm/
 endif
 
-ifndef NO_SDL
+ifdef WITH_SDL
 ifeq ($(strip $(shell which sdl-config)),)
    $(error SDL library not found)
 endif

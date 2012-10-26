@@ -55,6 +55,7 @@ namespace ensitlm {
 
 	 // build the payload ...
          trans->set_command(tlm::TLM_READ_COMMAND);
+         trans->set_response_status(tlm::TLM_INCOMPLETE_RESPONSE);
          trans->set_address(addr);
 
          trans->set_data_ptr(reinterpret_cast<unsigned char*>(&data));
@@ -83,6 +84,7 @@ namespace ensitlm {
          }
 
          trans->set_command(tlm::TLM_WRITE_COMMAND);
+         trans->set_response_status(tlm::TLM_INCOMPLETE_RESPONSE);
          trans->set_address(addr);
 
          trans->set_data_ptr(reinterpret_cast<unsigned char*>(&data));
